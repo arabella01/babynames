@@ -5,22 +5,34 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.opencsv.CSVReader;
+
 import ch.zhaw.babynames.model.Name;
 @RestController
 public class NameController {
+
  private ArrayList<Name> listOfNames;
+
  @GetMapping("/names")
  public ArrayList<Name> getNames() {
  return listOfNames;
  }
  @GetMapping("/names/count")
-public long getCount() {
-    return listOfNames.size();
+public long getCount(@RequestParam(required = false)String sex) {
+    if (sex != null) {
+        return listOfNames.stream()
+                          .filter(name -> name.getGeschlecht().equalsIgnoreCase(sex))
+                          .count();
+    } else {
+        return listOfNames.size();
+    }
 }
 
  @EventListener(ApplicationReadyEvent.class)
