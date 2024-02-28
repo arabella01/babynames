@@ -18,6 +18,11 @@ public class NameController {
  public ArrayList<Name> getNames() {
  return listOfNames;
  }
+ @GetMapping("/names/count")
+public long getCount() {
+    return listOfNames.size();
+}
+
  @EventListener(ApplicationReadyEvent.class)
  public void runAfterStartup() throws Exception {
  listOfNames = new ArrayList<>();
