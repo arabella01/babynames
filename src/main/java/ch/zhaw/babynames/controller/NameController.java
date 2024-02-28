@@ -35,6 +35,15 @@ public long getCount(@RequestParam(required = false)String sex) {
     }
 }
 
+@GetMapping("/names/frequency")
+public int getFrequency(@RequestParam String name) {
+    return listOfNames.stream()
+                       .filter(n -> n.getName().equalsIgnoreCase(name))
+                       .findFirst()
+                       .map(Name::getAnzahl)
+                       .orElse(0);
+}
+
  @EventListener(ApplicationReadyEvent.class)
  public void runAfterStartup() throws Exception {
  listOfNames = new ArrayList<>();
